@@ -32,7 +32,7 @@ const SignIn = ({ navigation }) => {
           behavior={Platform.OS === "android" ? "padding" : 40}
           contentContainerStyle={{ position: "absolute" }}
         >
-          <View style={{ alignItems: "center", marginTop: 60 }}>
+          <View style={{ alignItems: "center", marginTop: 80 }}>
             <Text style={{ fontSize: 30, fontWeight: "bold" }}>Sign In</Text>
           </View>
           <View style={style.input}>
@@ -51,10 +51,10 @@ const SignIn = ({ navigation }) => {
                 onChangeText={(text) => setPass(text)} 
                 secureTextEntry={hiddenPass? true : false}
             />
-            <TouchableOpacity style={{width:'10%',  justifyContent:'center', position:'absolute', bottom:15, right:30}}
+            {/* <TouchableOpacity style={{width:'10%',  justifyContent:'center', position:'absolute', bottom:15, right:30}}
                               onPress={() => setHiddenPass(!hiddenPass)}>
-              {/* <Image resizeMethod='auto' source={require('../../assets/icon/Hide.png')} /> */}
-            </TouchableOpacity>
+              <Image resizeMethod='auto' source={require('../../assets/icon/Hide.png')} />
+            </TouchableOpacity> */}
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -64,13 +64,23 @@ const SignIn = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity style={style.buttonAction}
                onPress={()=> {
-                    navigation.navigate('LogoAnimation')
+                    navigation.navigate('Home')
                }}
           >
             <Text style={{ color: "#fff", fontWeight: "400", fontSize: 25 }}>
               Login
             </Text>
           </TouchableOpacity>
+          <View style={{ flexDirection: "row", width: "60%" }}>
+            <Text>Don’t have an account?</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("SignUp");
+              }}
+            >
+              <Text style={{ color: "#CD8572" }}> Sign Up</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
       <View style={style.socialContainer}>
@@ -89,7 +99,7 @@ const SignIn = ({ navigation }) => {
             <Text>FaceBook</Text>
           </TouchableOpacity>
           <TouchableOpacity style={style.socialButton}>
-            {/* <Image source={require("../../assets/icon/Google.png")} /> */}
+            <Image source={require("../../assets/icon/Google.png")} />
             <Text>Google</Text>
           </TouchableOpacity>
         </View>
