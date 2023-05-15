@@ -12,19 +12,23 @@ import {
 import React, { useEffect, useState } from "react";
 import { SimpleLineIcons, FontAwesome } from "@expo/vector-icons";
 const windowHeight = Dimensions.get("window").height;
-import a from "./List";
-import ModalOrder from "./ModalOrder";
+import ItemOrder from "./ItemOrder";
+import { getOrder } from "../../firebase";
 
 //List order confirmation here
 export default function Index({navigation}) {
-  const [product, setProduct] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-
+  const [orderList, setOrderList] = useState([]);
+  async function fetchData() {
+    const data = await getOrder();
+    setOrderList(data)
+    console.log(data);
+  }
   useEffect(() => {
-    console.log(1);
-  }, [product]);
+    
+    fetchData();
+  }, []);
   const Logout = () => {
-    console.log(1);
+    navigation.navigate("SignIn")
   };
   return (
     <SafeAreaView
@@ -73,7 +77,7 @@ export default function Index({navigation}) {
         <FlatList
           showsVerticalScrollIndicator={false}
           horizontal={false}
-          data={a.item[3].product}
+          data={orderList}
           renderItem={({ item }) => {
             return (
               <>
@@ -91,9 +95,8 @@ export default function Index({navigation}) {
                     {new Date(Number(item.id)).toLocaleDateString() + " "}
                     {new Date(Number(item.id)).toTimeString().slice(0, 8)}
                   </Text>
-                  <Text>{item.data.length} order</Text>
                 </View>
-                <ModalOrder data={item.data} total={item.total} />
+                <ItemOrder data={item.dataFood} total={item.total} navigation={navigation} id={item.id} loadData={fetchData}/>
               </>
             );
           }}

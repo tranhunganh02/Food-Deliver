@@ -5,6 +5,7 @@ import SignUp from './screens/Auth/SignUp'
 import LogoAnimation from './screens/LogoAnimation/Index';
 import Home from './screens/Home/Index'
 import Order from './screens/Order/Index'
+import OrderDetails from './screens/Home/OrderDetails'
 const Stack = createNativeStackNavigator();
 const Index = () => {
 
@@ -16,6 +17,7 @@ const Index = () => {
                <Stack.Screen name="SignUp" component={SignUp}  />
                <Stack.Screen name="Home" component={Home}  />
                <Stack.Screen name="Order" component={Order}  />
+               <Stack.Screen name="OrderDetails" component={OrderDetails}  />
            </Stack.Navigator>
        </NavigationContainer>
      )
