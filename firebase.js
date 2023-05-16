@@ -64,7 +64,7 @@ const getOrder = async () => {
 };
 const getOrderWithId = async (id) => {
 
-  const q = query(collection(dbStore, "orders"), where("idDeliver", "==", "Huy"), where("status", "==", 2));
+  const q = query(collection(dbStore, "orders"), where("idDeliver", "==", auth.currentUser.uid), where("status", "==", 2));
 
   const querySnapshot = await getDocs(q);
 
@@ -98,10 +98,26 @@ const UpdateStatus = async (idOrder, status) => {
   const DocRef = doc(dbStore, "orders", `${idOrder}`);
   await updateDoc(DocRef, {
     status: status,
-    idDeliver: "Huy",
+    idDeliver: auth.currentUser.uid,
   });
 };
+async function getUser(idUser) {
+  try {
+    const docRef = doc(dbStore, "users", idUser);
+    const docSnap = await getDoc(docRef);
 
+    if (docSnap.exists()) {
+      const userData = docSnap.data();
+      return userData;
+    } else {
+      console.log("No such document!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting user document:", error);
+    return null;
+  }
+};
 export {
   auth,
   dbStore,
@@ -109,4 +125,5 @@ export {
   getImageProduct,
   UpdateStatus,
   getOrderWithId,
+  getUser
 };

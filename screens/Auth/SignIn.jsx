@@ -11,10 +11,33 @@ import {
 import React,{useLayoutEffect, useState} from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import style from "./style";
+import { auth } from "../../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 const SignIn = ({ navigation }) => {
-
+  const onPressSignIn = ( ) =>
+  {
+    signInWithEmailAndPassword(auth,getEmail,getPass)
+      .then((userCredential) => {
+        // Signed in
+        if(auth.currentUser.emailVerified)
+        {
+         navigation.navigate('Home')
+        }
+        else{
+            alert(
+            "Email Not Verified",
+            "Please verify your email to continue",
+          );
+        }
+        
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  }
   useLayoutEffect(()=>{
    
   })
@@ -64,7 +87,7 @@ const SignIn = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity style={style.buttonAction}
                onPress={()=> {
-                    navigation.navigate('Home')
+                onPressSignIn()
                }}
           >
             <Text style={{ color: "#fff", fontWeight: "400", fontSize: 25 }}>
@@ -75,7 +98,7 @@ const SignIn = ({ navigation }) => {
             <Text>Don’t have an account?</Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("SignUp");
+                navigation.navigate("Signup");
               }}
             >
               <Text style={{ color: "#CD8572" }}> Sign Up</Text>

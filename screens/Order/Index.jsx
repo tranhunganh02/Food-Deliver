@@ -10,7 +10,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getOrderWithId } from "../../firebase";
+import { auth, getOrderWithId } from "../../firebase";
 import { FlashList } from "@shopify/flash-list";
 import Item from "./Item";
 const windowHeight = Dimensions.get("window").height;
@@ -19,11 +19,9 @@ import { UpdateStatus } from "../../firebase";
 export default function Index({ navigation }) {
   const [data, setData] = useState([]);
   useEffect(() => {
-    async function fetchData() {
-      const getData = await getOrderWithId("Huy");
-      setData(getData);
-    }
-    fetchData();
+    getOrderWithId(auth.currentUser.uid).then((data) => {
+      setData(data);
+    });
   }, []);
   return (
     <SafeAreaView style={{ padding: 15, flex: 1 }}>
@@ -40,11 +38,11 @@ export default function Index({ navigation }) {
                     justifyContent: "flex-start",
                     alignItems: "center",
                     padding: 15,
-                    borderBottomWidth:1
+                    borderBottomWidth: 1,
                   }}
                 >
                   <View
-                  key={item.id}
+                    key={item.id}
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-between",
@@ -79,8 +77,8 @@ export default function Index({ navigation }) {
                       }}
                       onPress={() => {
                         Alert.alert("Order success");
-                        UpdateStatus(item.id, 3)
-                        navigation.navigate("Home")
+                        UpdateStatus(item.id, 3);
+                        navigation.navigate("Home");
                       }}
                     >
                       <Text>Delivery</Text>
@@ -123,9 +121,9 @@ export default function Index({ navigation }) {
                       {new Intl.NumberFormat("de-DE").format(item.total)} VND
                     </Text>
                   </View>
-                <View>
-                <Item data={item.dataFood} />
-                </View>
+                  <View>
+                    <Item data={item.dataFood} />
+                  </View>
                 </View>
               </>
             );

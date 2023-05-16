@@ -9,26 +9,26 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SimpleLineIcons, FontAwesome } from "@expo/vector-icons";
 const windowHeight = Dimensions.get("window").height;
 import ItemOrder from "./ItemOrder";
-import { getOrder } from "../../firebase";
+import { auth, getOrder } from "../../firebase";
+import { AppContext } from "../../OrderContext";
+import { signOut } from "firebase/auth";
 
 //List order confirmation here
 export default function Index({navigation}) {
-  const [orderList, setOrderList] = useState([]);
-  async function fetchData() {
-    const data = await getOrder();
-    setOrderList(data)
-    console.log(data);
-  }
+  const {order,updateOrder} = useContext(AppContext);
+  
   useEffect(() => {
     
-    fetchData();
-  }, []);
+  }, [order]);
   const Logout = () => {
-    navigation.navigate("SignIn")
+    signOut(auth).then(()=>
+    {
+      navigation.navigate("SignIn")
+    })
   };
   return (
     <SafeAreaView
@@ -77,7 +77,7 @@ export default function Index({navigation}) {
         <FlatList
           showsVerticalScrollIndicator={false}
           horizontal={false}
-          data={orderList}
+          data={order}
           renderItem={({ item }) => {
             return (
               <>
@@ -96,7 +96,7 @@ export default function Index({navigation}) {
                     {new Date(Number(item.id)).toTimeString().slice(0, 8)}
                   </Text>
                 </View>
-                <ItemOrder data={item.dataFood} total={item.total} navigation={navigation} id={item.id} loadData={fetchData}/>
+                <ItemOrder data={item.dataFood} total={item.total} navigation={navigation} id={item.id}/>
               </>
             );
           }}

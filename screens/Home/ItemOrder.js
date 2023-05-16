@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { FAB } from "@rneui/themed";
 const windowHeight = Dimensions.get("window").height;
-export default function ItemOrder({ data, total, navigation, id, loadData }) {
+export default function ItemOrder({ data, total, navigation, id }) {
   return (
     <TouchableOpacity
       style={styles.centeredView}

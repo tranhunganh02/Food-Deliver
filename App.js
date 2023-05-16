@@ -1,7 +1,9 @@
-
-import Index from './index';
+import { AppProvider } from "./OrderContext";
+import Index from "./index";
 export default function App() {
   return (
-    <Index/>
+    <AppProvider>
+      <Index />
+    </AppProvider>
   );
 }

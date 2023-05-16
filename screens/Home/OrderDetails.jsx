@@ -6,15 +6,16 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useEffect } from "react";
 import { Dimensions } from "react-native";
 import { UpdateStatus } from "../../firebase";
+import { AppContext } from "../../OrderContext";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 export default OrderDetails = ({ route, navigation }) => {
   const data = route.params.data
-
+  const {order,updateOrder}= useContext(AppContext);
 
   return (
     <View style={{ flex: 1, padding: 25 }}>
@@ -46,7 +47,7 @@ export default OrderDetails = ({ route, navigation }) => {
                       }}
                     >
                       <Text style={{ fontSize: 17, fontWeight: "400" }}>
-                        #{item.idProduct}
+                        #{index+1}
                       </Text>
                       <Text>
                         {new Intl.NumberFormat("de-DE").format(item.price)} VND
@@ -86,7 +87,8 @@ export default OrderDetails = ({ route, navigation }) => {
             <TouchableOpacity
               style={[styles.button, styles.buttonClose]}
               onPress={() => {
-                UpdateStatus(route.params.idOrder, 2)
+                UpdateStatus(route.params.idOrder, 2);
+                updateOrder()
                 navigation.goBack();
               }}
             >
